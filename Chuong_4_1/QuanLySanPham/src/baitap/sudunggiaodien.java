@@ -87,7 +87,6 @@ public class sudunggiaodien implements ActionListener {
     public void actionPerformed(ActionEvent e) {
     if (e.getSource() == addbtn) {
         try {
-            // Lấy thông tin từ người dùng
             String name = JOptionPane.showInputDialog("Nhập tên sản phẩm:");
             if (name == null || name.trim().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Tên sản phẩm không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -121,6 +120,48 @@ public class sudunggiaodien implements ActionListener {
             JOptionPane.showMessageDialog(null, "Đã xảy ra lỗi: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
+    else if(e.getSource() == editbtn){
+        try{
+            int selectedRow = t.getSelectedRow();
+            if(selectedRow == -1){
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn một dòng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            else{
+                String name = JOptionPane.showInputDialog("Nhập tên sản phẩm:");
+            if (name == null || name.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Tên sản phẩm không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String priceInput = JOptionPane.showInputDialog("Nhập giá sản phẩm:");
+            if (priceInput == null || priceInput.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Giá sản phẩm không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            float price = Float.parseFloat(priceInput);
+
+            String typeIDInput = JOptionPane.showInputDialog("Nhập mã loại sản phẩm:");
+            if (typeIDInput == null || typeIDInput.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Mã loại sản phẩm không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            int typeID = Integer.parseInt(typeIDInput);
+
+            QuanLySanPham.getInstance().sua(new SanPham(name, price, typeID),dssp.get(selectedRow).getMa());
+            
+            layDuLieu();
+            hienthidanhsach();
+
+            JOptionPane.showMessageDialog(null, "Sửa sản phẩm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập đúng định dạng số cho giá và mã loại!", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Đã xảy ra lỗi: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    else if(e.getSource()==)
 }
     
     public static void main(String args[]){

@@ -8,7 +8,7 @@ public class JDBCUtil {
         try{
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         String dbUrl = "jdbc:sqlserver://localhost:1433;DatabaseName=QLSanPham;encrypt=true;trustServerCertificate=true";
-        String username="sa"; String password = "tin12345";
+        String username="sa"; String password = "12345678";
         con = DriverManager.getConnection(dbUrl,username,password);
         } catch(ClassNotFoundException | SQLException e){
             System.out.println(e);
