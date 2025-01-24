@@ -82,6 +82,12 @@ public class sudunggiaodien implements ActionListener {
             model.addRow(new Object[]{sp.getMa(),sp.getTen(),sp.getGia(),sp.getTenmaloai()});
         }
     }
+    private void hienthidanhsach(Vector<SanPham> sps){
+        model.setRowCount(0);
+        for(SanPham sp: sps){
+            model.addRow(new Object[]{sp.getMa(),sp.getTen(),sp.getGia(),sp.getTenmaloai()});
+        }
+    }
     
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -161,7 +167,37 @@ public class sudunggiaodien implements ActionListener {
             JOptionPane.showMessageDialog(null, "Đã xảy ra lỗi: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
-    else if(e.getSource()==)
+    else if(e.getSource()== deletebtn){
+        int selectedRow = t.getSelectedRow();
+            if(selectedRow == -1){
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn một dòng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        int qes = JOptionPane.showConfirmDialog(null,"Bạn chắc chắn muốn xóa sản phẩm này?", "Question",JOptionPane.YES_NO_OPTION);
+        if(qes == JOptionPane.YES_OPTION)
+            QuanLySanPham.getInstance().xoa(dssp.get(selectedRow).getMa());
+        layDuLieu();
+            hienthidanhsach();
+
+            JOptionPane.showMessageDialog(null, "Xóa sản phẩm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+    }
+    else if(e.getSource() == findbtn){
+        try{
+            String idFind = JOptionPane.showInputDialog("Nhập mã sản phẩm muốn tìm");
+            if (idFind == null || idFind.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Mã sản phẩm không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            int id = Integer.parseInt(idFind);
+            hienthidanhsach(QuanLySanPham.getInstance().timMaLoai(id));
+            
+        }catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập đúng định dạng số cho giá và mã loại!", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Đã xảy ra lỗi: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }
 }
     
     public static void main(String args[]){
