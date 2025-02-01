@@ -60,10 +60,10 @@ public class UserDAO {
         boolean result = false;
         Connection con = ConnectDB.getConnection();
         try{
-            String sql = "Insert into users value(?,?,?)";
+            String sql = "Insert into users(Username,Password) value(?,?)";
             PreparedStatement pst = con.prepareStatement(sql);
-            pst.setString(2, user.getUsername());
-            pst.setString(3, user.getPassword());
+            pst.setString(1, user.getUsername());
+            pst.setString(2, user.getPassword());
             if(pst.executeUpdate()>=1)
                 result = true;
         }catch(SQLException e){
@@ -79,7 +79,7 @@ public class UserDAO {
         Connection con = ConnectDB.getConnection();
         try{
             String sql = "Select * from users"
-                    + " Where Username="+username;
+                    + " Where Username='"+username+"'";
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             result = rs.next();

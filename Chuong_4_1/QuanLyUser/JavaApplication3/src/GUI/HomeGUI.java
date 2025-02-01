@@ -8,6 +8,7 @@ import DTO.UserDTO;
 public class HomeGUI extends JFrame{
     UserDTO userLogin = new UserDTO();
     JLabel l = new JLabel();
+    JButton logout = new JButton("Logout");
     public HomeGUI(){
     }
     public HomeGUI(UserDTO user){
@@ -26,6 +27,17 @@ public class HomeGUI extends JFrame{
         l.setFont(new Font("Arial", Font.BOLD, 24));
         l.setForeground(Color.BLUE);
         
-        add(l);
+        logout.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                dispose();
+                LoginGUI lg = new LoginGUI();
+                lg.setVisible(true);
+            }
+        });
+                
+        add(l, BorderLayout.NORTH);
+        add(logout, BorderLayout.CENTER);
+
     }
 }

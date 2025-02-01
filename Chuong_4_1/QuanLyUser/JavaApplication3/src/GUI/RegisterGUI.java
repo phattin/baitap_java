@@ -6,15 +6,16 @@ import java.awt.event.*;
 import BUS.UserBUS;
 import DAO.UserDAO;
 import DTO.UserDTO;
+import GUI.LoginGUI;
 
-public class LoginGUI extends JFrame implements ActionListener {
+public class RegisterGUI extends JFrame implements ActionListener {
     UserBUS userBUS = new UserBUS();
     UserDAO userDAO = new UserDAO();
     JLabel title, lu, lp;
     JTextField tfu, tfp;
-    JButton confirmBtn, registerBtn;
+    JButton registerBtn;
     
-    public LoginGUI(){
+    public RegisterGUI(){
         this.initComponents();
     }
     
@@ -25,7 +26,7 @@ public class LoginGUI extends JFrame implements ActionListener {
     setLocationRelativeTo(null);
     setLayout(new BorderLayout());
     
-    title = new JLabel("Login", JLabel.CENTER);
+    title = new JLabel("Register", JLabel.CENTER);
     title.setFont(new Font("Arial", Font.BOLD, 24));
     title.setForeground(Color.BLUE);
 
@@ -50,42 +51,35 @@ public class LoginGUI extends JFrame implements ActionListener {
     formPanel.add(passwordPanel, BorderLayout.CENTER);
 
     JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-    confirmBtn = new JButton("Confirm");
     registerBtn = new JButton("Register");
 
-    buttonPanel.add(confirmBtn);
     buttonPanel.add(registerBtn);
     
     add(title, BorderLayout.NORTH);
     add(formPanel, BorderLayout.CENTER);
     add(buttonPanel, BorderLayout.SOUTH);
-    confirmBtn.addActionListener(this);
     registerBtn.addActionListener(this);
     }
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()== confirmBtn){
-            if(tfu.getText().isEmpty() || tfp.getText().isEmpty()){
-                JOptionPane.showMessageDialog(null, "Vui lòng nhập đủ thông tin");
-                return;
+        if(e.getSource() == registerBtn){
+            try{
+                if(tfu.getText().isEmpty() || tfp.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Vui lòng nhập đủ thông tin");
+                    return;
+                }
+                UserDTO userRegister = new UserDTO(tfu.getText(),tfp.getText());
+                if(userBUS.register(userRegister)){
+                    JOptionPane.showMessageDialog(null, "Đăng ký thành công");
+                    dispose();
+                    LoginGUI lg = new LoginGUI();
+                    lg.setVisible(true);
+                }
+            } catch(IllegalArgumentException ie){
+                JOptionPane.showMessageDialog(null, ie);
             }
-            UserDTO userLogin = new UserDTO(tfu.getText(),tfp.getText());
-            if(!userBUS.login(userLogin)){
-                JOptionPane.showMessageDialog(null, "Sai mật khẩu hoặc tên đăng nhập không tồn tại");
-                return;
-            }
-            else{
-                JOptionPane.showMessageDialog(null, "Đăng nhập thành công");
-                dispose();
-                new HomeGUI(userDAO.getUserByUsername(userLogin.getUsername()));
-            }
-        }
-        else if(e.getSource() == registerBtn){
-            dispose();
-            RegisterGUI rg = new RegisterGUI();
-            rg.setVisible(true);
         }
     }
-    
 }
+
